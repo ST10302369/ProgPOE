@@ -1,0 +1,61 @@
+﻿@model IEnumerable<ProgPOE.Models.Farmer>
+
+@{
+    ViewData["Title"] = "Farmers";
+}
+
+<div class="container">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1>Farmers</h1>
+        <a asp-action="CreateFarmer" class="btn btn-success">Add New Farmer</a>
+    </div>
+
+    @if (!Model.Any())
+    {
+        <div class="alert alert-info">
+            <p>No farmers have been registered yet. Get started by adding a farmer.</p>
+            <a asp-action="CreateFarmer" class="btn btn-primary mt-2">Add Farmer</a>
+        </div>
+    }
+    else
+    {
+        <div class="card">
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead class="table-light">
+                            <tr>
+                                <th>@Html.DisplayNameFor(model => model.FullName)</th>
+                                <th>@Html.DisplayNameFor(model => model.FarmName)</th>
+                                <th>@Html.DisplayNameFor(model => model.FarmLocation)</th>
+                                <th>@Html.DisplayNameFor(model => model.Email)</th>
+                                <th>@Html.DisplayNameFor(model => model.PhoneNumber)</th>
+                                <th>@Html.DisplayNameFor(model => model.RegistrationDate)</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td>@Html.DisplayFor(modelItem => item.FullName)</td>
+                                    <td>@Html.DisplayFor(modelItem => item.FarmName)</td>
+                                    <td>@Html.DisplayFor(modelItem => item.FarmLocation)</td>
+                                    <td>@Html.DisplayFor(modelItem => item.Email)</td>
+                                    <td>@Html.DisplayFor(modelItem => item.PhoneNumber)</td>
+                                    <td>@item.RegistrationDate.ToString("yyyy-MM-dd")</td>
+                                    <td>
+                                        <div class="btn-group">
+                                            <a asp-action="FarmerProducts" asp-route-id="@item.Id" class="btn btn-sm btn-success">Products</a>
+                                            <a asp-action="EditFarmer" asp-route-id="@item.Id" class="btn btn-sm btn-primary">Edit</a>
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    }
+</div>

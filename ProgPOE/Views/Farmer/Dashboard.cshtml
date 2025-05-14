@@ -1,0 +1,160 @@
+﻿@{
+    ViewData["Title"] = "Farmer Dashboard";
+}
+
+<div class="container">
+    <h1 class="display-4 mb-4">Farmer Dashboard</h1>
+
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card mb-4 shadow-sm">
+                <div class="card-header bg-success text-white">
+                    <h5 class="card-title mb-0">Farmer Information</h5>
+                </div>
+                <div class="card-body">
+                    <h5>@ViewBag.Farmer.FullName</h5>
+                    <p><strong>Farm:</strong> @ViewBag.Farmer.FarmName</p>
+                    <p><strong>Location:</strong> @ViewBag.Farmer.FarmLocation</p>
+                    <p><strong>Email:</strong> @ViewBag.Farmer.Email</p>
+                    <p><strong>Phone:</strong> @ViewBag.Farmer.PhoneNumber</p>
+                    <p><strong>Registered:</strong> @ViewBag.Farmer.RegistrationDate.ToString("dd MMM yyyy")</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-8">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="card mb-4 dashboard-card shadow-sm">
+                        <div class="card-body text-center">
+                            <div class="dashboard-icon">
+                                <i class="bi bi-box-seam"></i>
+                            </div>
+                            <h3 class="dashboard-stat">@ViewBag.ProductCount</h3>
+                            <h6>Total Products</h6>
+                            <a asp-action="Products" class="btn btn-outline-success btn-sm mt-2">View All Products</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="card mb-4 dashboard-card shadow-sm">
+                        <div class="card-body text-center">
+                            <div class="dashboard-icon">
+                                <i class="bi bi-tags"></i>
+                            </div>
+                            <h3 class="dashboard-stat">@(ViewBag.Categories?.Count ?? 0)</h3>
+                            <h6>Product Categories</h6>
+                            <a asp-action="CreateProduct" class="btn btn-outline-success btn-sm mt-2">Add New Product</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="card-title mb-0">Recent Products</h5>
+                </div>
+                <div class="card-body">
+                    @if (ViewBag.Products != null && ViewBag.Products.Count > 0)
+                    {
+                        <div class="row">
+                            @{
+                                // Cast to IEnumerable<Product> and then use Take
+                                var recentProducts = ((IEnumerable<ProgPOE.Models.Product>)ViewBag.Products).Take(4);
+                            }
+
+                            @foreach (var product in recentProducts)
+                            {
+                                <div class="col-md-6 mb-3">
+                                    <div class="card h-100 product-card">
+                                        <div class="row g-0">
+                                            <div class="col-4">
+                                                <div class="product-img-container">
+                                                    <img src="@(string.IsNullOrEmpty(product.ImageUrl) ? "https://via.placeholder.com/150x150?text=No+Image" : product.ImageUrl)"
+                                                         class="img-fluid rounded-start product-img" alt="@product.Name">
+                                                </div>
+                                            </div>
+                                            <div class="col-8">
+                                                <div class="card-body py-2">
+                                                    <h6 class="card-title mb-1">@product.Name</h6>
+                                                    <span class="badge bg-primary mb-1">@product.Category</span>
+                                                    <p class="card-text small mb-1">
+                                                        <small class="text-muted">Price: R@(product.PricePerUnit) per @product.Unit</small>
+                                                    </p>
+                                                    <p class="card-text small mb-1">
+                                                        <small class="text-muted">Stock: @product.Quantity @product.Unit</small>
+                                                    </p>
+                                                    <p class="card-text small">
+                                                        <small class="text-muted">@product.ProductionDate.ToString("dd MMM yyyy")</small>
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                        <div class="text-center mt-2">
+                            <a asp-action="Products" class="btn btn-primary">See All Products</a>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="alert alert-info">
+                            You don't have any products yet. <a asp-action="CreateProduct">Add your first product</a>.
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .product-card {
+        transition: transform 0.2s ease;
+        border: 1px solid rgba(0,0,0,0.1);
+        overflow: hidden;
+    }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+    .product-img-container {
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+        background-color: #f8f9fa;
+    }
+
+    .product-img {
+        object-fit: cover;
+        height: 100%;
+        width: 100%;
+    }
+
+    .dashboard-card {
+        transition: transform 0.3s;
+    }
+
+        .dashboard-card:hover {
+            transform: translateY(-5px);
+        }
+
+    .dashboard-stat {
+        font-size: 2.5rem;
+        font-weight: 600;
+        color: #1976d2;
+    }
+
+    .dashboard-icon {
+        font-size: 2.5rem;
+        color: #4caf50;
+        margin-bottom: 1rem;
+    }
+</style>

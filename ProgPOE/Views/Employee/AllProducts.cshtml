@@ -1,0 +1,117 @@
+﻿@model IEnumerable<ProgPOE.Models.Product>
+
+@{
+    ViewData["Title"] = "All Products";
+}
+
+<div class="container">
+    <h1 class="mb-4">All Products</h1>
+
+    <div class="card mb-4">
+        <div class="card-header bg-primary text-white">
+            <h5 class="mb-0">Filter Products</h5>
+        </div>
+        <div class="card-body">
+            <form asp-action="AllProducts" method="get" class="row g-3">
+                <div class="col-md-3">
+                    <label for="category" class="form-label">Category</label>
+                    <select name="category" id="category" class="form-select" asp-items="ViewBag.Categories">
+                        <option value="">All Categories</option>
+                    </select>
+                </div>
+
+                <div class="col-md-3">
+                    <label for="startDate" class="form-label">Start Date</label>
+                    <input type="date" id="startDate" name="startDate" class="form-control" value="@ViewBag.StartDate" />
+                </div>
+
+                <div class="col-md-3">
+                    <label for="endDate" class="form-label">End Date</label>
+                    <input type="date" id="endDate" name="endDate" class="form-control" value="@ViewBag.EndDate" />
+                </div>
+
+                <div class="col-md-3">
+                    <label for="farmerName" class="form-label">Farmer Name/Farm</label>
+                    <input type="text" id="farmerName" name="farmerName" class="form-control" value="@ViewBag.FarmerName" placeholder="Search by name or farm" />
+                </div>
+
+                <div class="col-12">
+                    <button type="submit" class="btn btn-primary">Apply Filters</button>
+                    <a asp-action="AllProducts" class="btn btn-outline-secondary">Clear Filters</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    @if (!Model.Any())
+    {
+        <div class="alert alert-info">
+            <p>No products found with the current filters.</p>
+        </div>
+    }
+    else
+    {
+        <div class="card">
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Image</th>
+                                <th>@Html.DisplayNameFor(model => model.Name)</th>
+                                <th>@Html.DisplayNameFor(model => model.Category)</th>
+                                <th>Farmer</th>
+                                <th>@Html.DisplayNameFor(model => model.ProductionDate)</th>
+                                <th>@Html.DisplayNameFor(model => model.Quantity)</th>
+                                <th>@Html.DisplayNameFor(model => model.PricePerUnit)</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td>
+                                        <img src="@(string.IsNullOrEmpty(item.ImageUrl) ? "https://via.placeholder.com/50x50?text=No+Image" : item.ImageUrl)"
+                                             class="product-thumbnail" alt="@item.Name">
+                                    </td>
+                                    <td>@Html.DisplayFor(modelItem => item.Name)</td>
+                                    <td>@Html.DisplayFor(modelItem => item.Category)</td>
+                                    <td>
+                                        <a asp-action="FarmerProducts" asp-route-id="@item.FarmerId">
+                                            @item.Farmer.FullName
+                                        </a>
+                                    </td>
+                                    <td>@item.ProductionDate.ToString("yyyy-MM-dd")</td>
+                                    <td>@item.Quantity @item.Unit</td>
+                                    <td>R @item.PricePerUnit</td>
+                                    <td>
+                                        <a asp-action="FarmerProducts" asp-route-id="@item.FarmerId" class="btn btn-sm btn-primary">View All from Farmer</a>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+<style>
+    .product-thumbnail {
+        width: 50px;
+        height: 50px;
+        object-fit: cover;
+        border-radius: 4px;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        transition: transform 0.2s;
+    }
+
+        .product-thumbnail:hover {
+            transform: scale(2);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            z-index: 100;
+            position: relative;
+        }
+</style>

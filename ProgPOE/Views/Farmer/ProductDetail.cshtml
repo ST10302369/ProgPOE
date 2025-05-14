@@ -1,0 +1,70 @@
+﻿@model ProgPOE.Models.Product
+
+@{
+    ViewData["Title"] = "Product Details";
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <div class="card shadow">
+                <div class="card-header bg-primary text-white">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h4 class="mb-0">Product Details</h4>
+                        <div>
+                            <a asp-action="EditProduct" asp-route-id="@Model.Id" class="btn btn-sm btn-light me-2">
+                                <i class="bi bi-pencil"></i> Edit
+                            </a>
+                            <a asp-action="DeleteProduct" asp-route-id="@Model.Id" class="btn btn-sm btn-danger">
+                                <i class="bi bi-trash"></i> Delete
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-5 text-center mb-3">
+                            <img src="@(string.IsNullOrEmpty(Model.ImageUrl) ? "https://via.placeholder.com/400x300?text=No+Image" : Model.ImageUrl)"
+                                 class="img-fluid rounded shadow-sm" style="max-height: 300px;" alt="@Model.Name" />
+                        </div>
+                        <div class="col-md-7">
+                            <h3 class="mb-3">@Model.Name</h3>
+
+                            <div class="mb-3">
+                                <span class="badge bg-primary">@Model.Category</span>
+                                <span class="badge bg-secondary">@Model.ProductionDate.ToString("dd MMM yyyy")</span>
+                            </div>
+
+                            <div class="row mb-4">
+                                <div class="col-6">
+                                    <div class="card bg-light">
+                                        <div class="card-body p-2 text-center">
+                                            <h6 class="text-muted mb-1">Price</h6>
+                                            <h4 class="text-success mb-0">R @Model.PricePerUnit</h4>
+                                            <small class="text-muted">per @Model.Unit</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="card bg-light">
+                                        <div class="card-body p-2 text-center">
+                                            <h6 class="text-muted mb-1">Stock</h6>
+                                            <h4 class="mb-0">@Model.Quantity</h4>
+                                            <small class="text-muted">@Model.Unit</small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <h5 class="mt-4 mb-2">Description</h5>
+                            <p class="mb-0">@(string.IsNullOrEmpty(Model.Description) ? "No description provided." : Model.Description)</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <a asp-action="Products" class="btn btn-secondary">Back to Products</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

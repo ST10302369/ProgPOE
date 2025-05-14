@@ -1,0 +1,115 @@
+﻿@model IEnumerable<ProgPOE.Models.Product>
+
+@{
+    ViewData["Title"] = "My Products";
+}
+
+<div class="container">
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show mt-3" role="alert">
+            @TempData["SuccessMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+    @if (ViewBag.Error != null || TempData["Error"] != null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show mt-3" role="alert">
+            @(ViewBag.Error ?? TempData["Error"])
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1>My Products</h1>
+        <a asp-action="CreateProduct" class="btn btn-success">
+            <i class="bi bi-plus-lg"></i> Add New Product
+        </a>
+    </div>
+
+    @if (!Model.Any())
+    {
+        <div class="alert alert-info">
+            <p>You don't have any products yet. Get started by adding your first product.</p>
+            <a asp-action="CreateProduct" class="btn btn-primary mt-2">Add Product</a>
+        </div>
+    }
+    else
+    {
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+            @foreach (var item in Model)
+            {
+                <div class="col">
+                    <div class="card h-100 shadow-sm product-card">
+                        <div class="card-img-top product-img-container">
+                            <img src="@(string.IsNullOrEmpty(item.ImageUrl) ? "https://via.placeholder.com/400x300?text=No+Image" : item.ImageUrl)"
+                                 class="product-img" alt="@item.Name">
+                        </div>
+                        <div class="card-body">
+                            <h5 class="card-title">@item.Name</h5>
+                            <span class="badge bg-primary mb-2">@item.Category</span>
+                            <p class="card-text">@(item.Description?.Length > 100 ? item.Description.Substring(0, 97) + "..." : item.Description)</p>
+
+                            <div class="d-flex justify-content-between mt-3">
+                                <div>
+                                    <small class="text-muted">Price:</small>
+                                    <div class="text-success fw-bold">R @item.PricePerUnit</div>
+                                    <small class="text-muted">per @item.Unit</small>
+                                </div>
+                                <div>
+                                    <small class="text-muted">Quantity:</small>
+                                    <div class="fw-bold">@item.Quantity @item.Unit</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-footer bg-white">
+                            <small class="text-muted">Produced: @item.ProductionDate.ToString("yyyy-MM-dd")</small>
+                            <div class="btn-group w-100 mt-2">
+                                <a asp-action="ProductDetail" asp-route-id="@item.Id" class="btn btn-sm btn-outline-primary">View</a>
+                                <a asp-action="EditProduct" asp-route-id="@item.Id" class="btn btn-sm btn-outline-secondary">Edit</a>
+                                <a asp-action="DeleteProduct" asp-route-id="@item.Id" class="btn btn-sm btn-outline-danger">Delete</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+</div>
+
+<style>
+    .product-card {
+        transition: transform 0.3s ease;
+    }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1) !important;
+        }
+
+    .product-img-container {
+        height: 200px;
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: #f8f9fa;
+    }
+
+    .product-img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.3s ease;
+    }
+
+    .product-card:hover .product-img {
+        transform: scale(1.05);
+    }
+
+    .card-title {
+        font-weight: 600;
+        margin-bottom: 0.25rem;
+    }
+</style>
