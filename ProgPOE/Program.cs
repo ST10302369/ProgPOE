@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using ProgPOE.Data;
+using ProgPOE.Middleware;
 
 namespace ProgPOE
 {
@@ -43,6 +44,9 @@ namespace ProgPOE
 
             // Use sessions
             app.UseSession();
+
+            // Use our custom role authorization middleware
+            app.UseRoleAuthorization();
 
             app.MapStaticAssets();
             app.MapControllerRoute(

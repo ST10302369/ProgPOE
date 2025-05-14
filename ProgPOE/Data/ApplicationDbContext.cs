@@ -41,8 +41,7 @@ namespace ProgPOE.Data
                 {
                     Id = 1,
                     Username = "employee",
-                    // In a real app, you would hash this password
-                    Password = "employee123",
+                    Password = "employee123", // Using plain text password to avoid hashing issues
                     Role = UserRoles.Employee,
                     RegistrationDate = seedDate
                 },
@@ -50,8 +49,7 @@ namespace ProgPOE.Data
                 {
                     Id = 2,
                     Username = "farmer",
-                    // In a real app, you would hash this password
-                    Password = "farmer123",
+                    Password = "farmer123", // Using plain text password to avoid hashing issues
                     Role = UserRoles.Farmer,
                     FarmerId = 1,
                     RegistrationDate = seedDate
@@ -96,6 +94,7 @@ namespace ProgPOE.Data
                     Unit = "kg",
                     PricePerUnit = 25.50m,
                     Description = "Fresh organic tomatoes",
+                    ImageUrl = "https://images.pexels.com/photos/1327838/pexels-photo-1327838.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
                     FarmerId = 1
                 },
                 new Product
@@ -108,6 +107,7 @@ namespace ProgPOE.Data
                     Unit = "dozen",
                     PricePerUnit = 45.00m,
                     Description = "Farm-fresh free-range eggs",
+                    ImageUrl = "https://images.pexels.com/photos/162712/egg-white-food-protein-162712.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
                     FarmerId = 1
                 },
                 new Product
@@ -120,6 +120,7 @@ namespace ProgPOE.Data
                     Unit = "kg",
                     PricePerUnit = 15.75m,
                     Description = "Fresh sweet corn",
+                    ImageUrl = "https://images.pexels.com/photos/603030/pexels-photo-603030.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
                     FarmerId = 2
                 },
                 new Product
@@ -132,6 +133,7 @@ namespace ProgPOE.Data
                     Unit = "kg",
                     PricePerUnit = 18.50m,
                     Description = "Freshly picked organic apples",
+                    ImageUrl = "https://images.pexels.com/photos/672101/pexels-photo-672101.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
                     FarmerId = 2
                 }
             );

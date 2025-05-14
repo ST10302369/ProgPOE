@@ -110,11 +110,20 @@ namespace ProgPOE.Controllers
                 _context.Add(farmer);
                 await _context.SaveChangesAsync();
 
+                // Generate username from email
+                string username = farmer.Email.Split('@')[0].ToLower();
+
+                // Default password
+                string plainPassword = "farmer123";
+
+                // Hash the password
+                string hashedPassword = PasswordHasher.HashPassword(plainPassword);
+
                 // Create a new user account for the farmer
                 var user = new User
                 {
-                    Username = farmer.Email.Split('@')[0].ToLower(), // Simple username from email
-                    Password = "farmer123", // Default password, should be changed
+                    Username = username,
+                    Password = hashedPassword, // Store the hashed password
                     Role = UserRoles.Farmer,
                     FarmerId = farmer.Id,
                     RegistrationDate = DateTime.Now

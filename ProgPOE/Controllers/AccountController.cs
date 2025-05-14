@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using ProgPOE.Data;
 using ProgPOE.Models;
+using ProgPOE.Helpers;
 using System.Threading.Tasks;
 
 namespace ProgPOE.Controllers
@@ -34,7 +35,7 @@ namespace ProgPOE.Controllers
 
             var user = await _context.Users
                 .Include(u => u.Farmer)
-                .FirstOrDefaultAsync(u => u.Username == username && u.Password == password);
+                .FirstOrDefaultAsync(u => u.Username == username);
 
             if (user == null)
             {
@@ -42,8 +43,23 @@ namespace ProgPOE.Controllers
                 return View();
             }
 
-            // In a real app, you would use ASP.NET Core Identity
-            // For simplicity, we're using session to store the user info
+            // Verify the password
+            bool isPasswordCorrect = PasswordHasher.VerifyPassword(password, user.Password);
+
+            if (!isPasswordCorrect)
+            {
+                ModelState.AddModelError("", "Invalid username or password.");
+                return View();
+            }
+
+            // If password correct but not hashed (legacy password), update to hashed version
+            if (PasswordHasher.NeedsUpgrade(user.Password))
+            {
+                user.Password = PasswordHasher.HashPassword(password);
+                await _context.SaveChangesAsync();
+            }
+
+            // Set up the session
             HttpContext.Session.SetInt32("UserId", user.Id);
             HttpContext.Session.SetString("Username", user.Username);
             HttpContext.Session.SetString("Role", user.Role);

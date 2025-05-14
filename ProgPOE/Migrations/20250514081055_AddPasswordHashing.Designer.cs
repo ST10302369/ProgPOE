@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ProgPOE.Data;
 
@@ -11,9 +12,11 @@ using ProgPOE.Data;
 namespace ProgPOE.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250514081055_AddPasswordHashing")]
+    partial class AddPasswordHashing
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -225,7 +228,7 @@ namespace ProgPOE.Migrations
                         new
                         {
                             Id = 1,
-                            Password = "employee123",
+                            Password = "$2a$12$sNMUsmwqEAER4/ZbHKPPBuNtPrQXVOpY577eRCrDLkIqkyz6Qzt2C",
                             RegistrationDate = new DateTime(2025, 5, 13, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Role = "Employee",
                             Username = "employee"
@@ -234,7 +237,7 @@ namespace ProgPOE.Migrations
                         {
                             Id = 2,
                             FarmerId = 1,
-                            Password = "farmer123",
+                            Password = "$2a$12$UNIVUUdH7jG6Gq/vXudhrOoD5VrCzpkVmar1UNLStpl8Uus4iV8Eq",
                             RegistrationDate = new DateTime(2025, 5, 13, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Role = "Farmer",
                             Username = "farmer"

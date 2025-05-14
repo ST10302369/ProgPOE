@@ -11,7 +11,7 @@ namespace ProgPOE.Models
         public string Username { get; set; }
 
         [Required]
-        public string Password { get; set; }
+        public string Password { get; set; }  // This will store the hashed password
 
         [Required]
         public string Role { get; set; }
@@ -29,7 +29,7 @@ namespace ProgPOE.Models
 
         // Navigation property for the Farmer
         [ForeignKey("FarmerId")]
-        public virtual Farmer Farmer { get; set; }
+        public virtual Farmer? Farmer { get; set; }
     }
 
     // Define roles as constants
